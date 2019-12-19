@@ -19,12 +19,13 @@ services:
       - RABBITMQ_DEFAULT_USER=postal
       - RABBITMQ_DEFAULT_PASS=changeme
       - RABBITMQ_DEFAULT_VHOST=postal
-      - MX_HOSTNAME=mx.postal.example.com
-      - SMTP_HOSTNAME=postal.example.com
-      - SPF_HOSTNAME=spf.example.com
-      - RP_HOSTNAME=rp.example.com
-      - ROUTE_HOSTNAME=route.example.com
-      - TRACK_HOSTNAME=track.example.com
+      - MX_HOSTNAME=$MX_SUB$BASE_HOSTNAME
+      - SMTP_HOSTNAME=$SMTP_SUB$BASE_HOSTNAME
+      - SPF_HOSTNAME=$SPF_SUB$BASE_HOSTNAME
+      - RP_HOSTNAME=$RP_SUB$BASE_HOSTNAME
+      - ROUTE_HOSTNAME=$ROUTE_SUB$BASE_HOSTNAME
+      - TRACK_HOSTNAME=$TRACK_SUB$BASE_HOSTNAME
+      - WEB_HOSTNAME=$WEB_SUB$BASE_HOSTNAME
   mysql:
     image: mariadb:10
     container_name: postal_mysql

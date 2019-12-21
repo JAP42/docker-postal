@@ -1,0 +1,17 @@
+app_name: Postal
+log_path: /tmp/postal/procodile.log
+pid_root: /tmp/postal/pids
+processes:
+  web:
+    restart_mode: usr1
+  fast:
+    restart_mode: term-start
+    max_respawns: 50
+  smtp:
+    restart_mode: usr1
+  worker:
+    restart_mode: start-term
+    max_respawns: 50
+  cron:
+    restart_mode: term-start
+    max_respawns: 50

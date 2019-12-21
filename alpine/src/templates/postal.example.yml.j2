@@ -40,6 +40,11 @@ rabbitmq:
   username: {{ RABBITMQ_DEFAULT_USER }}
   password: {{ RABBITMQ_DEFAULT_PASS }}
   vhost: /{{ RABBITMQ_DEFAULT_VHOST }}
+  
+spamd:
+  enabled: {{ SPAM_ENABLE }}
+  host: spamassassin
+  port: 783
 
 dns:
   # Specifies the DNS record that you have configured. Refer to the documentation at

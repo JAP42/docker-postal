@@ -2,7 +2,7 @@ version: "3"
 services:
   postal:
     image: catdeployed/postal:alpine
-    container_name: postal
+    restart: always
     command: run
     ports:
       - 127.0.0.1:25:25
@@ -14,10 +14,10 @@ services:
       - ./data/postal/assets:/opt/postal/public/assets
       - ./src/templates/:/templates
     environment:
-      - MYSQL_ROOT_PASSWORD=changeme
+      - MYSQL_ROOT_PASSWORD=$MYSQL_PASS
       - MYSQL_DATABASE=postal
       - RABBITMQ_DEFAULT_USER=postal
-      - RABBITMQ_DEFAULT_PASS=changeme
+      - RABBITMQ_DEFAULT_PASS=$RABBIT_PASS
       - RABBITMQ_DEFAULT_VHOST=postal
       - MX_HOSTNAME=$MX_SUB$BASE_HOSTNAME
       - SMTP_HOSTNAME=$SMTP_SUB$BASE_HOSTNAME
@@ -26,24 +26,25 @@ services:
       - ROUTE_HOSTNAME=$ROUTE_SUB$BASE_HOSTNAME
       - TRACK_HOSTNAME=$TRACK_SUB$BASE_HOSTNAME
       - WEB_HOSTNAME=$WEB_SUB$BASE_HOSTNAME
+      - SPAM_ENABLE=true
   mysql:
     image: mariadb:10
-    container_name: postal_mysql
+    restart: always
     volumes:
       - ./data/mysql:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=changeme
+      - MYSQL_ROOT_PASSWORD=$MYSQL_PASS
       - MYSQL_DATABASE=postal
   rabbitmq:
     image: rabbitmq:3-alpine
-    container_name: postal_rabbitmq
     environment:
       - RABBITMQ_DEFAULT_USER=postal
-      - RABBITMQ_DEFAULT_PASS=changeme
+      - RABBITMQ_DEFAULT_PASS=$RABBIT_PASS
       - RABBITMQ_DEFAULT_VHOST=/postal
   nginx:
     image: nginx
     container_name: postal_nginx
+    restart: always
     ports:
       - 0.0.0.0:80:80
     links:
@@ -54,6 +55,14 @@ services:
       - ./src/nginx.conf:/etc/nginx/conf.d/default.conf:ro
       - static_assets:/opt/postal/public:ro
       - ./data/postal/assets:/opt/postal/public/assets:ro
+      
+  spamassassin:
+    image: tiredofit/spamassassin
+    volumes:
+    - ./logs/spamassassin:/var/log/spamassassin
+    - ./conf:/etc/mail/spamassassin
+    - ./data:/var/lib/spamassassin
+    restart: always
 volumes:
   static_assets:
 

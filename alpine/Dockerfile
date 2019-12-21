@@ -22,6 +22,10 @@ RUN setcap 'cap_net_bind_service=+ep' /usr/local/bin/ruby
 ## Stick in required files
 ADD src/docker-entrypoint.sh /docker-entrypoint.sh
 ADD src/templates /templates
+ADD src/Procfile.options /opt/postal/Procfile.options
+
+## Make config files mountable on host. 
+VOLUME /opt/postal/config
 
 ## Expose
 EXPOSE 5000

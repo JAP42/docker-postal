@@ -20,6 +20,7 @@ echo "== Waiting for MySQL to start up =="
 while ! mysqladmin ping -h mysql --silent; do
     sleep 0.5
 done
+sleep 10
 
 ## Start Postal
 /opt/postal/bin/postal "$@"

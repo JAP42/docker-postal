@@ -1,7 +1,7 @@
 version: "3"
 services:
   postal:
-    image: catdeployed/postal:alpine
+    image: jap42/postal:alpine
     restart: always
     command: run
     ports:
